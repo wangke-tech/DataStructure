@@ -3,14 +3,14 @@ class CatagoryTree(object):
     def __init__(self):
         self.tree = []
     class Node(object):
-        def __init__(self,base,parent='',children=[]):
+        def __init__(self,base,parent=(None),children=[]):#parent只能有一个，应该是Tuple类型。而children长度是可变的，应该是List类型
             self.base= base
             self.parent = parent
             self.children = children
     def add_catagory(self,a,b):
-        #当b为None时，将a作为tree的跟节点
+        #当b为None时，将a作为tree的根节点
         if b is None:
-            a = self.Node(a,parent=None)
+            a = self.Node(a)
             self.tree.append(a)
         else:
             #不然的话，就遍历tree
@@ -24,7 +24,7 @@ class CatagoryTree(object):
                     flag = True
                 #当找不到b时，抛异常
             if not flag:
-                print 'Parrent Node %s is not exist!'%a
+                print 'Parent Node %s is not exist!'%a
 
 
     def get_children(self,a):
