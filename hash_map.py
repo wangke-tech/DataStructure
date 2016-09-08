@@ -3,21 +3,31 @@
 
 
 keys = []
+diarr = []
+
+di = 0
 
 
-def get_key(hasharr, value, di, arr_len=10):
+def get_key(hasharr, value, di=0, arr_len=10):
     # 计算key
     # (value + di ) % arr_len
     key = (value + di) % 10
-
     if key <= arr_len -1 and not hasharr[key]:
         pass
     elif key <= arr_len -1 and hasharr[key]:
         di +=1
-        key = get_key(hasharr, value, di)
+        key, di = get_key(hasharr, value, di)
     else:
         raise KeyError
-    return key
+    return key, di
+
+
+def read(hasharr, value, di=0, arr_len=10):
+    key = (value + di) % 10
+    while value != hasharr[key]:
+        di +=1
+        key, di = read(hasharr, value,di)
+    return key, di
 
 
 def get_hash_table(arr):
@@ -34,33 +44,36 @@ def get_hash_table(arr):
     for di in range(lenarr):
 
         value = arr[di]
-        key = get_key(hasharr, value, di)
+        key, di = get_key(hasharr, value, di)
         flag = True
         while hasharr[key] and flag:
             flag = False
-            key = get_key(hasharr, value, di)
+            key, di = get_key(hasharr, value, di)
         if flag is False:
             continue
         hasharr[key] = value
+        diarr.append(di)
     return hasharr
 
 
-def find(arr, value):
+def find(hasharr, value,di=0):
     # arr = [81, 45, 11, 23, 93, 15]
-    key = get_key(arr, value)
-    if arr[key] == value:
-        return key
+    key, di = read(hasharr, value)
+    i = 0
+    while value != hasharr[key] and i <10:
+        di +=1
+        key, di = read(hasharr, value, di)
+        print 73, key
+        i +=1
+    return key
 
 
 if '__main__' == __name__:
 
     arr = [81, 45, 11, 23, 93, 15]
     print 'originarr', arr
-    hash_arr = get_hash_table(arr)
-    print 'hasharr', hash_arr
 
+    hasharr = get_hash_table(arr)
+    print 'hasharr', hasharr
 
-
-
-
-
+    print hasharr[find(hasharr, 23)]
