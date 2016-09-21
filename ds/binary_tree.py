@@ -1,91 +1,70 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""二叉树
+
+class BinaryTree(object):
+    def __init__(self, root=None, left=None, right=None):
+        self.root =root
+        self.left =left
+        self.right =right
+
+    def insert_left(self, newnode):
+        newnode = BinaryTree(newnode) if not isinstance(newnode, BinaryTree) else newnode
+        if not self.left:
+            self.left = newnode
+        else:
+            tree = newnode
+            tree.left = self.left
+            self.left = tree
+
+    def insert_right(self, newnode):
+        newnode = BinaryTree(newnode) if not isinstance(newnode, BinaryTree) else newnode
+        if not self.right:
+            self.right = newnode
+        else:
+            tree = BinaryTree(newnode)
+            tree.left = self.left
+            self.left = tree
+
+    def get_left(self):
+        return self.left
+
+    def get_root(self):
+        return self.root
+
+    def set_root_val(self, obj):
+        self.root = obj
+
+    def get_root_val(self):
+        return self.root
+
+"""
+r = BinaryTree('a')
+print r.get_root_val()
+r.insert_left('b')
+print r.get_left()
+print r.get_left().get_root_val()
+r.insert_right('c')
+print r.get_right()
+print r.get_right().get_root_val()
+r.get_right().set_root_val('hello')
+print r.get_right().get_root_val()
+print r.get_root_val()
 """
 
-
-class binTNode():
-    def __init__(self, data, left=None, right=None):
-        self.data = data
-        self.right = right
-        self.left = left
-
-
-# 统计节点个数
-def count_binTNodes(bin_tree):
-    if not bin_tree:
-        return 0
-    else:
-        return 1 + count_binTNodes(bin_tree.left) + count_binTNodes(bin_tree.right)
+"""
+                  a
+                /   \
+               b     c
+              / \      \
+             d   e      f
+1、前序遍历
+   a b d e c f
 
 
-# 统计节点数据和
-def sum_binTNodes(bin_tree):
-    if not bin_tree:
-        return 0
-    else:
-        return bin_tree.data + sum_binTNodes(bin_tree.left) + sum_binTNodes(bin_tree.right)
-
-
-# 递归先序遍历
-def pre_order(bin_tree, lst=[]):
-    if not bin_tree:
-        return
-    else:
-        lst.append(bin_tree.data)
-        pre_order(bin_tree.left)
-        pre_order(bin_tree.right)
-    return lst
-
-
-# 递归中序遍历
-def mid_order(bin_tree, lst=[]):
-    if not bin_tree:
-        return
-    else:
-        mid_order(bin_tree.left)
-        lst.append(bin_tree.data)
-        mid_order(bin_tree.right)
-    return lst
-
-# 宽度优先遍历
-#from SQueue import *
-from  collections import deque
-
-def levelorder(t, proc):
-    qu = deque()
-    qu.enqueue(t)
-    while not qu.is_empty():
-        n = qu.dequeue()
-        if t is None:
-            continue
-        qu.enqueue(t.left)
-        qu.enqueue(t.right)
-        proc(data)
-
-
-# 非递归先序遍历
-def pre_order_nonrec(bin_tree, lst=[]):
-    stack = []
-    while bin_tree or stack:
-        while bin_tree:
-            lst.append(bin_tree.data)
-            stack.append(bin_tree.right)
-            bin_tree = bin_tree.left
-        print 'stack',stack
-        print 'stack is not None',stack is not None
-        print 'stack',stack
-        bin_tree = stack.pop()
-        print 'bin_tree',bin_tree
-
-    return lst
-
-if '__main__' == __name__:
-    t = binTNode(2, binTNode(4, binTNode(1, binTNode(3))), binTNode(5))
-    print '节点数', count_binTNodes(t)
-    print '节点和', sum_binTNodes(t)
-    print '先序遍历结果', pre_order(t)
-    print '中序遍历结果', mid_order(t)
-    print '非递归先序遍历结果', pre_order_nonrec(t)
+"""
+tree = BinaryTree('a', BinaryTree('b'), BinaryTree('c'))
+tree.get_left().insert_left('d')
+tree.get_left().insert_right('e')
+tree.get_right().insert_right('f')
 
