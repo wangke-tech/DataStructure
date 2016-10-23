@@ -77,14 +77,20 @@ def S(bt):
         s.append(bt.right)
     if hasattr(bt, 'left'):
         s.append(bt.left)
+if '__main__' == __name__:
 
-print ("\n#Travel by Width:\n"), Q(bt)
+    print """The Binary Tree:
 
-#while not q.empty():
-#    print q.get()
+                     1
+                   /   \\
+                 2       3
+                /       /  \\
+               4       5    6 \n
+    """
 
-print ("\n#Travel by Deepth:\n")
+    print ("\n#Travel by Width:\n"), Q(bt)
 
-S(bt)
-while s:
-    S(s.pop())
+    print ("\n#Travel by Deepth:\n")
+    S(bt)
+    while s:
+        S(s.pop())
