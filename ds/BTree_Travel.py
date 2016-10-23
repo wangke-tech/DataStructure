@@ -12,7 +12,6 @@ class BTree:
         self.right = right
 
 q, s = Queue(), Stack()
-
 bt = BTree(1, BTree(2, 4, None), BTree(3, 5, 6))
 
 
@@ -77,6 +76,21 @@ def S(bt):
         s.append(bt.right)
     if hasattr(bt, 'left'):
         s.append(bt.left)
+
+
+def travel(bt, order):
+    if bt is None:
+        return
+    squece = {
+        'N': lambda: visitor(bt),
+        'L': lambda: travel(bt.left, order) if hasattr(bt, 'left') else None,
+        'R': lambda: travel(bt.right, order) if hasattr(bt, 'right') else None,
+    }
+
+    for n in order:
+        squece[n]()
+
+
 if '__main__' == __name__:
 
     print """The Binary Tree:
@@ -94,3 +108,6 @@ if '__main__' == __name__:
     S(bt)
     while s:
         S(s.pop())
+
+    for order in ['NLR', 'LNR', 'LRN']:
+        print "Travel %s:\n" %(order, ), travel(bt, order)
