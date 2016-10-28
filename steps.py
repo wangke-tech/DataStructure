@@ -9,6 +9,8 @@
 
 
 def f(n):
+    if n <=0:
+        return 0
     if 0 < n <=2:
         return n
     else:
